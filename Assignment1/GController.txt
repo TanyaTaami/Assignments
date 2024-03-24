@@ -1,0 +1,36 @@
+
+from GMode import GMode_DC, GMode_Marvel
+from GConnector import GConnector
+from math import comb
+class GController:
+    gconnector: GConnector
+    def __init__(self):
+      self.gconnector=GConnector()
+
+    def Member_to_dict(self,team_name, name, height, weight, games_played):
+        
+        if 175 <= height <= 205 and 75 <= weight <= 140 and games_played >= 0:
+          if team_name=="Marvel":
+           gmode=GMode_Marvel(name, height, weight, games_played)
+           self.gconnector.store_member_Marvel(gmode)
+           return "OK"
+          elif team_name=="DC":
+            gmode=GMode_DC(name, height, weight, games_played) 
+            self.gconnector.store_member_DC(gmode)
+            return "OK"
+          return "Failed"
+        
+    def prob(self):
+       n=self.gconnector.count_member_Marvel()
+       m=self.gconnector.count_member_DC()       
+       return (comb(n,2)*comb(m,3))/(comb(n+m,5))
+    
+    def list1(self):
+       return self.gconnector.list_heavier_taller()
+    
+    def list2(self):
+       return self.gconnector.list_heavier_Captain_America()
+       
+    def list3(self):
+       return  self.gconnector.list_metaverse350_units()
+   

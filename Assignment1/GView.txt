@@ -1,0 +1,46 @@
+from GController import GController
+
+class GView: 
+  gController:GController
+  def __init__(self):
+    self.gController =GController()
+
+  def get_member_info(self):
+        team_name = input("Enter team name (Marvel/DC): ")
+        name = input("Enter member name: ")
+        height = float(input("Enter member height (in cm): "))
+        weight = float(input("Enter member weight (in kg): "))
+        games_played = int(input("Enter number of games played: "))
+        self.gController.Member_to_dict(team_name, name, height, weight, games_played)
+        
+  def store_members_in_dict(self):
+    for member in range(1,2):
+      self.get_member_info()
+
+  def prob(self):
+    return self.gController.prob()
+
+  def list1(self):
+    return self.gController.list1()
+  
+  def  list2(self): 
+     return (self.gController.list2())
+  
+  def list3(self):
+     return (self.gController.list3())
+
+view=GView()
+# view.store_members_in_dict()
+# print(view.prob())
+#for index, value in enumerate(view.list1()):
+#   print(value[0])
+#
+
+# print(type( view.list1()))
+
+#print( view.list2())
+print(view.gController.gconnector.count_member_DC())
+for index, value in enumerate(view.list3()):
+  print(value[0])
+
+

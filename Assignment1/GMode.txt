@@ -1,0 +1,15 @@
+class GMode_DC:
+    def __init__(self, name, height, weight, games_played):
+        self.team_name = "DC"
+        self.name = name
+        self.height = height
+        self.weight = weight
+        self.games_played = games_played
+
+class GMode_Marvel:
+    def __init__(self,  name, height, weight, games_played):
+        self.team_name = "Marvel"
+        self.name = name
+        self.height = height
+        self.weight = weight
+        self.games_played = games_played

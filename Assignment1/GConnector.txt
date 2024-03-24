@@ -1,0 +1,100 @@
+import mysql.connector
+from GMode import GMode_DC,GMode_Marvel
+class GConnector:
+      
+    def __init__(self):
+        try:
+            self.con = mysql.connector.connect(
+                host="localhost",
+                database='gladiator',
+                user="root",
+                password="root123"
+            )
+            self.mydb = self.con.cursor()
+        except Exception as e:
+            print(str(e))
+
+    def  store_member_DC(self, gmod):
+     try:
+            query = "INSERT INTO team_dc ( name, height, weight, games_played) " \
+                    "VALUES ( %s, %s, %s, %s)"
+            values = (gmod.name, gmod.height, 
+                      gmod.weight, gmod.games_played)
+            self.mydb.execute(query, values)
+            self.con.commit()
+     except Exception as e:
+            print(str(e))
+
+    def  store_member_Marvel(self, gmod):
+     try:
+            query = "INSERT INTO team_marvel (name, height, weight, games_played) " \
+                    "VALUES ( %s, %s, %s, %s)"
+            values = (gmod.name, gmod.height, 
+                      gmod.weight, gmod.games_played)
+            self.mydb.execute(query, values)
+            self.con.commit()
+     except Exception as e:
+            print(str(e))
+
+    def  count_member_Marvel(self):
+     try:
+            query = "select count(*) as b FROM team_marvel"
+            self.mydb.execute(query)
+            rowsNum = self.mydb.fetchall()[-1][-1]
+            return  rowsNum
+     except Exception as e:
+            print(str(e))
+
+    def  count_member_DC(self):
+     try:
+            query = "select count(*) as a FROM team_dc"
+            self.mydb.execute(query)
+            rowsNum = self.mydb.fetchall()[-1][-1]
+            return  rowsNum
+     except Exception as e:
+            print(str(e))
+
+    def  list_heavier_taller(self):
+     try:
+            query ="select mv2.name FROM gladiator.team_marvel as mv2 WHERE weight > (SELECT mv.weight FROM gladiator.team_marvel as mv WHERE mv.name = 'SpiderMan') \
+                AND height > (SELECT dc.height FROM gladiator.team_dc as dc WHERE dc.name = 'Henery')\
+               Union All\
+               (SELECT dc2.Name from  gladiator.team_dc as dc2\
+               WHERE dc2.weight > (SELECT mv.weight FROM gladiator.team_marvel as mv WHERE mv.name = 'SpiderMan')\
+               AND dc2.height > (SELECT dc.height FROM gladiator.team_dc as dc WHERE dc.name = 'Henery'))"
+            
+            self.mydb.execute(query)
+            rows = self.mydb.fetchall()
+            return  rows
+     except Exception as e:
+            print(str(e))
+
+    def list_heavier_Captain_America(self): 
+      try:
+            query ="SELECT * FROM ( SELECT name, games_played, weight, 'Marvel' AS Team FROM gladiator.team_marvel \
+                    WHERE weight > (SELECT weight FROM gladiator.team_marvel WHERE name = 'Captain America')\
+                         UNION ALL SELECT name, games_played, weight, 'DC' AS Team FROM gladiator.team_dc\
+                             WHERE weight > (SELECT weight FROM gladiator.team_dc WHERE Name = 'Captain America') \
+                              ) AS Stars WHERE games_played > 100;"
+            
+            self.mydb.execute(query)
+            rows = self.mydb.fetchall()
+            return  rows
+      except Exception as e:
+            print(str(e))
+
+    def list_metaverse350_units(self): 
+      try:
+            query ="select name FROM ( select name,  height + weight + games_played AS TotalStats FROM gladiator.team_marvel \
+                   UNION ALL select name, height + weight + games_played AS TotalStats FROM  gladiator.team_dc)  AS AllStars \
+                   WHERE TotalStats > 350;"
+            
+            self.mydb.execute(query)
+            rows = self.mydb.fetchall()
+            return  rows
+      except Exception as e:
+            print(str(e))
+
+
+
+
